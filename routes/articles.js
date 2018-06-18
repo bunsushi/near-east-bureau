@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     app.get("/scrape", function (req, res) {
 
-        // Scrape articles for Niqash
+        // Scrape articles from Niqash
         axios.get("http://www.niqash.org/").then(function (response) {
             var $ = cheerio.load(response.data);
 
@@ -39,6 +39,115 @@ module.exports = function (app) {
 
             res.send("Scrape Complete");
         });
+
+        // Scrape articles from 1001 Iraqi Thoughts: Politics
+        axios.get("http://1001iraqithoughts.com/174-2/").then(function (response) {
+            var $ = cheerio.load(response.data);
+
+            $(".post-content").each(function (i, element) {
+                // Save an empty result object
+                var result = {};
+
+                // Create an object with required source, title, and link, and optional author, summary, and date
+                result.source = "1001 Iraqi Thoughts";
+                result.title = $(element).find("h2").children("a").text();
+                result.link = $(element).find("h2").children("a").attr("href");
+                result.summary = $(element).find(".excerpt p").text().trim();
+                result.date = $(element).find(".post-meta").find(".updated").text().trim();
+
+                db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
+            });
+
+            res.send("Scrape Complete");
+        });
+
+        // Scrape articles from 1001 Iraqi Thoughts: Security
+        axios.get("http://1001iraqithoughts.com/economy/").then(function (response) {
+            var $ = cheerio.load(response.data);
+
+            $(".post-content").each(function (i, element) {
+                // Save an empty result object
+                var result = {};
+
+                // Create an object with required source, title, and link, and optional author, summary, and date
+                result.source = "1001 Iraqi Thoughts";
+                result.title = $(element).find("h2").children("a").text();
+                result.link = $(element).find("h2").children("a").attr("href");
+                result.summary = $(element).find(".excerpt p").text().trim();
+                result.date = $(element).find(".post-meta").find(".updated").text().trim();
+
+                db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
+            });
+
+            res.send("Scrape Complete");
+        });
+
+        // Scrape articles from 1001 Iraqi Thoughts: Economy
+        axios.get("http://1001iraqithoughts.com/economy-2/").then(function (response) {
+            var $ = cheerio.load(response.data);
+
+            $(".post-content").each(function (i, element) {
+                // Save an empty result object
+                var result = {};
+
+                // Create an object with required source, title, and link, and optional author, summary, and date
+                result.source = "1001 Iraqi Thoughts";
+                result.title = $(element).find("h2").children("a").text();
+                result.link = $(element).find("h2").children("a").attr("href");
+                result.summary = $(element).find(".excerpt p").text().trim();
+                result.date = $(element).find(".post-meta").find(".updated").text().trim();
+
+                db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
+            });
+
+            res.send("Scrape Complete");
+        });
+
+        // Scrape articles from 1001 Iraqi Thoughts: Society
+        axios.get("http://1001iraqithoughts.com/society/").then(function (response) {
+            var $ = cheerio.load(response.data);
+
+            $(".post-content").each(function (i, element) {
+                // Save an empty result object
+                var result = {};
+
+                // Create an object with required source, title, and link, and optional author, summary, and date
+                result.source = "1001 Iraqi Thoughts";
+                result.title = $(element).find("h2").children("a").text();
+                result.link = $(element).find("h2").children("a").attr("href");
+                result.summary = $(element).find(".excerpt p").text().trim();
+                result.date = $(element).find(".post-meta").find(".updated").text().trim();
+
+                db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
+            });
+
+            res.send("Scrape Complete");
+        });
+
     });
 
     // Route for getting all Articles from the db
