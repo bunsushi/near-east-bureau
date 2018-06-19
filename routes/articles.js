@@ -40,7 +40,7 @@ module.exports = function (app) {
             res.send("Scrape Complete");
         });
 
-        // Scrape articles from 1001 Iraqi Thoughts: Politics
+        // // Scrape articles from 1001 Iraqi Thoughts: Politics
         axios.get("http://1001iraqithoughts.com/174-2/").then(function (response) {
             var $ = cheerio.load(response.data);
 
@@ -67,7 +67,7 @@ module.exports = function (app) {
             res.send("Scrape Complete");
         });
 
-        // Scrape articles from 1001 Iraqi Thoughts: Security
+        // // Scrape articles from 1001 Iraqi Thoughts: Security
         axios.get("http://1001iraqithoughts.com/economy/").then(function (response) {
             var $ = cheerio.load(response.data);
 
@@ -94,7 +94,7 @@ module.exports = function (app) {
             res.send("Scrape Complete");
         });
 
-        // Scrape articles from 1001 Iraqi Thoughts: Economy
+        // // Scrape articles from 1001 Iraqi Thoughts: Economy
         axios.get("http://1001iraqithoughts.com/economy-2/").then(function (response) {
             var $ = cheerio.load(response.data);
 
@@ -121,7 +121,7 @@ module.exports = function (app) {
             res.send("Scrape Complete");
         });
 
-        // Scrape articles from 1001 Iraqi Thoughts: Society
+        // // Scrape articles from 1001 Iraqi Thoughts: Society
         axios.get("http://1001iraqithoughts.com/society/").then(function (response) {
             var $ = cheerio.load(response.data);
 
@@ -143,6 +143,35 @@ module.exports = function (app) {
                     .catch(function (err) {
                         return res.json(err);
                     });
+            });
+
+            res.send("Scrape Complete");
+        });
+
+        // Scrape articles from Al-Monitor: Iraq
+        axios.get("https://www.al-monitor.com/pulse/iraq-pulse").then(function (response) {
+            var $ = cheerio.load(response.data);
+
+            $(".border-container").each(function (i, element) {
+                // Save an empty result object
+                var result = {};
+
+                // Create an object with required source, title, and link, and optional author, summary, and date
+                result.source = "Al-Monitor";
+                result.title = $(element).find("h2").children("a").text();
+                result.link = "https://www.al-monitor.com" + $(element).find("h2").children("a").attr("href");
+                result.author = $(element).attr("title");
+                result.date = $(element).attr("title");
+
+                if (result.author) {
+                    db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
+                }
             });
 
             res.send("Scrape Complete");
