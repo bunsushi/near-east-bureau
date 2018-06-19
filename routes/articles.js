@@ -164,12 +164,12 @@ module.exports = function (app) {
 
                 if (result.author) {
                     db.Article.create(result)
-                    .then(function (dbArticle) {
-                        console.log(dbArticle);
-                    })
-                    .catch(function (err) {
-                        return res.json(err);
-                    });
+                        .then(function (dbArticle) {
+                            console.log(dbArticle);
+                        })
+                        .catch(function (err) {
+                            return res.json(err);
+                        });
                 }
             });
 
@@ -210,6 +210,7 @@ module.exports = function (app) {
 
     // // Route for saving/updating an Article's associated Note
     app.post("/articles/:id", function (req, res) {
+
         // Create a new note and pass the req.body to the entry
         db.Note.create(req.body)
             .then(function (dbNote) {
@@ -225,6 +226,31 @@ module.exports = function (app) {
             .catch(function (err) {
                 // If an error occurred, send it to the client
                 res.json(err);
+            });
+    });
+
+    // Route for updating a saved article
+    app.put("/articles/:id", function (req, res) {
+        // Update the note that matches the object id
+        db.Article.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                saved: true
+            },
+            function (error, edited) {
+                // Log any errors from mongojs
+                if (error) {
+                    console.log(error);
+                    res.send(error);
+                }
+                else {
+                    // Otherwise, send the mongojs response to the browser
+                    // This will fire off the success function of the ajax request
+                    console.log(edited);
+                    res.send(edited);
+                }
             });
     });
 

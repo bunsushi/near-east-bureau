@@ -32,7 +32,8 @@ $.getJSON("/articles", function (data) {
         articleComment.append("<i class='fas fa-comment'></i>");
 
         var articleLike = $("<div>");
-        articleLike.addClass("interactive");
+        articleLike.addClass("interactive save");
+        articleLike.attr("data-id", data[i]._id);
         articleLike.append("<i class='fas fa-star'></i>");
 
         articleContainer.append(articleSource);
@@ -48,7 +49,7 @@ $.getJSON("/articles", function (data) {
     }
 });
 
-// Whenever someone clicks a p tag
+// Whenever someone clicks a comment tag
 $(document).on("click", ".comment", function () {
     console.log("click!");
     // Empty the notes from the note section
@@ -114,3 +115,21 @@ $(document).on("click", "#savenote", function() {
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
+
+  // Save an article to your list
+  $(document).on("click", ".save", function () {
+
+    var thisId = $(this).attr("data-id");
+
+    $.ajax({
+        method: "PUT",
+        url: "/articles/" + thisId,
+        data: {
+            saved: true,
+          }
+    })
+        // With that done, add the note information to the page
+        .then(function (data) {
+            console.log(data);
+        });
+});
