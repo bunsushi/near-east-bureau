@@ -21,7 +21,7 @@ $.getJSON("/articles", function (data) {
         articleSource.append(data[i].source);
 
         var articleAuthor = $("<p>");
-        articleAuthor.append("By: " + data[i].author);
+        articleAuthor.append(data[i].author);
 
         var articleDate = $("<p>");
         articleDate.append(data[i].date);
@@ -64,6 +64,9 @@ $(document).on("click", ".comment", function () {
         // With that done, add the note information to the page
         .then(function (data) {
             console.log(data);
+
+            //TODO: Make this into a modal
+
             // The title of the article
             $("#notes").append("<h2>" + data.title + "</h2>");
             // An input to enter a new title

@@ -4,7 +4,6 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./../models");
 
-// A GET route for scraping the echoJS website
 module.exports = function (app) {
     app.get("/", function (req, res) {
         res.render("index");
@@ -228,4 +227,14 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
+
+    // Route for visiting page with news sources
+    app.get("/sources", function (req, res) {
+        res.render("sources");
+    });
+
+    // Route for visiting saved articles
+    app.get("/saved", function (req, res) {
+        res.render("saved");
+    })
 };
