@@ -2,6 +2,7 @@
 
 // Grab the articles as a json
 $.getJSON("/articles", function (data) {
+
     // For each one
     for (var i = 0; i < data.length; i++) {
         // Display the apropos information on the page
@@ -112,6 +113,18 @@ $(document).on("click", "#scrape-articles", function () {
             location.reload();
         })
 });
+
+$(document).on("click", "#clear-articles", function () {
+    console.log("Cleaning up...");
+
+    $.ajax({
+        method: "DELETE",
+        url: "/articles"
+    })
+        .then(function (data) {
+            location.reload();
+        })
+})
 
 // Whenever someone clicks a comment tag
 $(document).on("click", ".comment", function () {
