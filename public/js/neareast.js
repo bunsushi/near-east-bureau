@@ -49,6 +49,18 @@ $.getJSON("/articles", function (data) {
     }
 });
 
+$(document).on("click", "#scrape-articles", function () {
+    console.log("I work");
+    
+    $.ajax({
+        method: "GET",
+        url: "/scrape"
+    })
+        .then(function (data) {
+            location.reload();
+        })
+});
+
 // Whenever someone clicks a comment tag
 $(document).on("click", ".comment", function () {
     console.log("click!");
