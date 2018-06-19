@@ -233,12 +233,8 @@ module.exports = function (app) {
     app.put("/articles/:id", function (req, res) {
         // Update the note that matches the object id
         db.Article.findOneAndUpdate(
-            {
-                _id: req.params.id
-            },
-            {
-                saved: true
-            },
+            { _id: req.params.id },
+            {$set: { saved: true }},
             function (error, edited) {
                 // Log any errors from mongojs
                 if (error) {

@@ -49,21 +49,72 @@ $.getJSON("/articles", function (data) {
     }
 });
 
+// Grab the articles as a json
+$.getJSON("/articles", function (data) {
+    // For each one
+    for (var i = 0; i < data.length; i++) {
+        // Display the apropos information on the page
+
+        var articleLink = $("<a>");
+        articleLink.attr("href", data[i].link);
+        articleLink.attr("target", "_blank");
+
+        var articleContainer = $("<div>");
+        articleContainer.addClass("article-container");
+
+        var articleTitle = $("<h2>");
+        articleTitle.text(data[i].title);
+
+        var articleSource = $("<div>");
+        articleSource.addClass("article-source");
+        articleSource.append(data[i].source);
+
+        var articleAuthor = $("<p>");
+        articleAuthor.append(data[i].author);
+
+        var articleDate = $("<p>");
+        articleDate.append(data[i].date);
+
+        var articleComment = $("<div>");
+        articleComment.addClass("interactive comment");
+        articleComment.attr("data-id", data[i]._id);
+        articleComment.append("<i class='fas fa-comment'></i>");
+
+        var articleLike = $("<div>");
+        articleLike.addClass("interactive save");
+        articleLike.attr("data-id", data[i]._id);
+        articleLike.append("<i class='fas fa-star'></i>");
+
+        articleContainer.append(articleSource);
+        articleLink.append(articleTitle);
+        articleContainer.append(articleLink);
+        if (data[i].author) {
+            articleContainer.append(articleAuthor);
+        }
+        // articleContainer.append(articleDate);
+        articleContainer.append(articleLike, articleComment);
+
+        if (data[i].saved) {
+            $("#saved-articles").append(articleContainer);
+        }
+    }
+});
+
 $(document).on("click", "#scrape-articles", function () {
-    console.log("I work");
+    console.log("Getting those articles for you!");
     
     $.ajax({
         method: "GET",
         url: "/scrape"
     })
         .then(function (data) {
+            // TODO: Add a set time out; seems to be missing some articles
             location.reload();
         })
 });
 
 // Whenever someone clicks a comment tag
 $(document).on("click", ".comment", function () {
-    console.log("click!");
     // Empty the notes from the note section
     $("#notes").empty();
     // Save the id from the p tag
